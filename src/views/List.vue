@@ -4,7 +4,6 @@
       <b-card-group deck>
          <Card v-for="(pokemon, index) in pokemons" :key="index" :pokemon="pokemon" />
       </b-card-group>
-      
    </div>
 </template>
 
@@ -23,12 +22,21 @@ export default {
          limit: 36, //de 12 em 12
          offset: 0,
          count: 0,
+         gifs: []
       }
    },
    created(){
       PokemonServices.getPokemons(this.limit, this.offset)
          .then(response => {
             this.pokemons = response.data.results
+         })
+         .catch(error => {
+            console.log(error)
+         }),
+      PokemonServices.getPokemonGif()
+         .then(response => {
+            this.gifs = response.data
+            console.log(this.gifs[0].gif)
          })
          .catch(error => {
             console.log(error)
